@@ -11,9 +11,14 @@
 
 # Do you walk your blue dog quickly? That's hilarious!
 
+# simpler, but less concise:
+    # puts "Enter a noun:"
+    # noun = gets.chomp
+
+    # puts "Enter a verb:"
+    # verb = gets.chomp
+
 def madlib
-  # puts "Enter a noun:"
-  # noun = gets.chomp
   inputs = {
               "noun" => "",
               "verb" => "",
