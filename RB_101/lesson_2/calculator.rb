@@ -2,12 +2,15 @@
 # asks for the type of operation to perform: add, subtract, multiply or divide
 # displays the result
 
+require 'yaml'
+MESSAGES = YAML.load_file('calculator_messages.yml')
+
 def prompt(message)
   puts "=> #{message}"
 end
 
 def valid_number?(num)
-  num.to_i != 0
+  num.to_i.to_s == num || num.to_f.to_s == num
 end
 
 def operation_to_message(op)
@@ -23,7 +26,8 @@ def operation_to_message(op)
   end
 end
 
-prompt "Welcome to Calculator! Enter your name:"
+prompt(MESSAGES['welcome'])
+# prompt "Welcome to Calculator! Enter your name:"
 # same as: prompt("Welcome to Calculator! Enter your name:")
 
 name = ''
@@ -31,7 +35,7 @@ loop do
   name = gets.chomp
 
   if name.empty?
-    prompt "Make sure to use a valid name."
+    prompt MESSAGES['valid_name']
   else
     break
   end
@@ -40,21 +44,22 @@ end
 loop do
   num1 = ''
   loop do
-    prompt "Enter a number"
-    num1 = gets.chomp.to_f
+    prompt MESSAGES['enter_first_argument']
+    num1 = gets.chomp
 
     break if valid_number?(num1)
 
-    prompt "Hmm... that doesn't look like a valid number"
+    prompt MESSAGES['valid_number']
   end
 
   num2 = ''
   loop do
-    prompt "Enter a second number"
-    num2 = gets.chomp.to_f
+    prompt MESSAGES['enter_second_argument']
+
+    num2 = gets.chomp
 
     break if valid_number?(num2)
-    prompt "Hmm... that doesn't look like a valid number"
+    prompt MESSAGES['valid_number']
   end
 
   operator_prompt = <<-MSG
@@ -72,27 +77,28 @@ loop do
     if %w(1 2 3 4).include?(operator)
       break
     else
-      prompt "must choose 1, 2, 3, or 4"
+      prompt MESSAGES['valid_operator']
     end
   end
 
-  prompt "#{operation_to_message(operator)} the two numbers..."
+  prompt "#{operation_to_message(operator)}" + MESSAGES['computing']
 
   result = case operator.to_i
            when 1
-             num1 + num2
+             num1.to_f + num2.to_f
            when 2
-             num1 - num2
+             num1.to_f - num2.to_f
            when 3
-             num1 * num2
+             num1.to_f * num2.to_f
            when 4
-             num1 / num2
+             num1.to_f / num2.to_f
            end
-  prompt "The result is #{result}"
+  prompt MESSAGES['result'] + "#{result}"
 
-  prompt "Would you like to perform another calculation? (y/n)"
+
+  prompt MESSAGES['another_calculation']
   input = gets.chomp
   break unless input.downcase.start_with?('y')
 end
 
-prompt "Thank you for using the calculator. Goodbye."
+prompt MESSAGES['goodbye']
