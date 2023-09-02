@@ -7,14 +7,14 @@ end
 
 def valid_amount(loan)
   # loan.to_i.to_s == loan && loan.to_i > 0
-  loan.to_i > 0 #should be good enough
+  loan.to_i > 0 # should be good enough
 end
 
 def valid_apr(apr)
-  if apr.to_i == 0 
-    apr.to_f.to_s == apr ? apr.to_f.between?(0,100) : false
+  if apr.to_i == 0
+    apr.to_f.to_s == apr ? apr.to_f.between?(0, 100) : false
   else
-    apr.to_f.between?(0,100)
+    apr.to_f.between?(0, 100)
   end
 end
 
@@ -23,7 +23,6 @@ def decimal_apr(apr)
 end
 
 loop do
-
   prompt(MESSAGES['welcome'])
 
   name = ''
@@ -71,11 +70,13 @@ loop do
     end
   end
 
-  monthly_rate = apr/12
+  monthly_rate = apr / 12
 
-  monthly_payment = loan_amount * (monthly_rate / (1 - (1 + monthly_rate)**(-duration)))
+  monthly_payment =
+    loan_amount *
+    (monthly_rate / (1 - ((1 + monthly_rate)**(-duration))))
 
-  prompt("Your monthly payment is $" + "#{format('%.2f', monthly_payment)}")
+  prompt("Your monthly payment is $#{format('%.2f', monthly_payment)}")
 
   prompt MESSAGES['again']
   answer = gets.chomp
